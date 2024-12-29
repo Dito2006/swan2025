@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starry Night Countdown</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(circle, #000000, #111111);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            flex-direction: column;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .heading {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .countdown {
+            position: relative;
+            font-size: 5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: fadeInOut 1s ease-in-out;
+        }
+
+        .signature {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        video {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .emoji {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="heading">🦢 Swan Keep Your 👀 Open</div>
+    <div id="countdown" class="countdown"></div>
+    <div class="signature">By N i g g a <span class="emoji">🥷</span></div>
+    <video id="video" controls>
+     <source src="New Year Countdown 4K 2025  After Effects Template CC.mp4" type="video/mp4">
+    </video>
+    <script>
+        const starContainer = document.querySelector('.stars');
+        const numberOfStars = 100;
+
+        // Create stars
+        for (let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            starContainer.appendChild(star);
+        }
+
+        // Countdown to specific time (11:49 PM GMT+3)
+        const countdownElement = document.getElementById('countdown');
+        const videoElement = document.getElementById('video');
+
+        function calculateTimeDifference() {
+            const now = new Date();
+            const target = new Date();
+            target.setUTCHours(20, 49, 0, 0); // 11:49 PM GMT+3 is 20:49 UTC
+            
+            if (now > target) {
+                target.setDate(target.getDate() + 1); // Move to the next day if the time has passed
+            }
+
+            const diff = target - now;
+            return {
+                hours: Math.floor(diff / (1000 * 60 * 60)),
+                minutes: Math.floor((diff / (1000 * 60)) % 60),
+                seconds: Math.floor((diff / 1000) % 60)
+            };
+        }
+
+        function updateCountdown() {
+            const { hours, minutes, seconds } = calculateTimeDifference();
+
+            if (hours === 0 && minutes === 0 && seconds === 0) {
+                countdownElement.style.display = 'none';
+                videoElement.style.display = 'block';
+                videoElement.play();
+                clearInterval(countdownInterval);
+            } else {
+                countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
